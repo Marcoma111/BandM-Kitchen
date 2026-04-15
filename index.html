@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的家庭厨房 - 智能点餐系统</title>
+    <style>
+        /* 基础样式布局 */
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #fdf5e6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #d2691e;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        /* 菜单部分样式 */
+        .menu-section h2 {
+            font-size: 1.1rem;
+            color: #5d4037;
+            border-left: 4px solid #d2691e;
+            padding-left: 10px;
+            margin: 20px 0 10px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed #eee;
+            cursor: pointer;
+        }
+
+        /* 隐藏原生复选框，稍后可以自定义，这里保持简单可用 */
+        .menu-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .item-details {
+            flex-grow: 1;
+            display: flex;
+            justify-content: space-between;
+            margin-left: 15px;
+            font-size: 1.05rem;
+        }
+
+        .price {
+            color: #e44d26;
+            font-weight: bold;
+        }
+
+        /* 结算栏样式 */
+        .checkout-bar {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #fdf5e6;
+        }
+
+        .total-price {
+            font-size: 1.2rem;
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        #total-amount {
+            color: #e44d26;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .order-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #d2691e;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .order-btn:hover {
+            background-color: #a0522d;
+            transform: translateY(-2px);
+        }
+
+        .order-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🍳 家庭厨房菜单</h1>
+    <p class="subtitle">今日食材已更新，请选择您的午餐</p>
+
+    <div class="menu-section">
+        <h2>家常热炒</h2>
+        <div class="menu-item">
+            <input type="checkbox" class="food-item" data-name="西红柿炒鸡蛋" data-price="18" onchange="updateTotal()">
+            <div class="item-details">
+                <span>西红柿炒鸡蛋</span>
+                <span class="price">¥18</span>
+            </div>
+        </div>
+        <div class="menu-item">
+            <input type="checkbox" class="food-item" data-name="鱼香肉丝" data-price="28" onchange="updateTotal()">
+            <div class="item-details">
+                <span>鱼香肉丝</span>
+                <span class="price">¥28</span>
+            </div>
+        </div>
+        <div class="menu-item">
+            <input type="checkbox" class="food-item" data-name="外婆红烧肉" data-price="45" onchange="updateTotal()">
+            <div class="item-details">
+                <span>外婆红烧肉</span>
+                <span class="price">¥45</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-section">
+        <h2>滋补汤品</h2>
+        <div class="menu-item">
+            <input type="checkbox" class="food-item" data-name="玉米排骨汤" data-price="35" onchange="updateTotal()">
+            <div class="item-details">
+                <span>玉米排骨汤</span>
+                <span class="price">¥35</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="checkout-bar">
+        <div class="total-price">
+            合计金额: <span id="total-amount">¥0</span>
+        </div>
+        <button class="order-btn" onclick="confirmOrder()">立即下单</button>
+    </div>
+</div>
+
+<script>
+    /**
+     * 功能 1: 实时更新合计金额
+     */
+    function updateTotal() {
+        const checkboxes = document.querySelectorAll('.food-item:checked');
+        let total = 0;
+        
+        checkboxes.forEach(item => {
+            // 从 data-price 属性中获取数值
+            total += parseInt(item.getAttribute('data-price'));
+        });
+        
+        // 更新界面显示
+        document.getElementById('total-amount').innerText = "¥" + total;
+    }
+
+    /**
+     * 功能 2: 确认订单并弹出提示
+     */
+    function confirmOrder() {
+        const selectedItems = document.querySelectorAll('.food-item:checked');
+        
+        if (selectedItems.length === 0) {
+            alert("您的购物车还是空的哦，快去选购吧！");
+            return;
+        }
+
+        let orderList = [];
+        let finalTotal = 0;
+
+        selectedItems.forEach(item => {
+            orderList.push(item.getAttribute('data-name'));
+            finalTotal += parseInt(item.getAttribute('data-price'));
+        });
+
+        const message = `
+确认下单！
+------------------
+已选菜品：
+${orderList.join('\n')}
+
+总计金额：¥${finalTotal}
+------------------
+大厨这就开始为您烹饪！
+        `;
+        
+        alert(message);
+    }
+</script>
+
+</body>
+</html>
