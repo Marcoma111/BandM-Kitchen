@@ -6,7 +6,7 @@
     <title>BandM Kitchen</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght=500;700&family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     
@@ -515,13 +515,13 @@
         });
 
         try {
-            # 1. 结构化 JSON 存入 orders 表的 items 字段中进行记录沉淀
+            // 1. 结构化 JSON 存入 orders 表的 items 字段中进行记录沉淀
             const { error } = await db.from('orders').insert([
                 { customer_name: name, contact_info: contact, dining_date: date, items: dbItems }
             ]);
             if (error) throw error;
 
-            # 2. 静默推送至 PushDeer
+            // 2. 静默推送至 PushDeer
             const msgContent = `🚨 BandM Kitchen 新订单提醒 🚨\n\n` +
                                `👤 顾客姓名: ${name}\n` +
                                `📞 联系方式: ${contact}\n` +
@@ -532,7 +532,7 @@
                 mode: 'no-cors'
             });
 
-            # 3. 呼出手机端完美适配的沉浸式高级弹窗
+            // 3. 呼出手机端完美适配的沉浸式高级弹窗
             document.getElementById('modal-title-text').innerText = i18n[currentLang].success_title;
             document.getElementById('modal-desc-text').innerText = i18n[currentLang].success_desc;
             document.getElementById('modal-btn-text').innerText = i18n[currentLang].success_btn;
