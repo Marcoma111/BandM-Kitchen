@@ -57,9 +57,9 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script>
-        // ==================== [核心配置区域已完全锁死] ====================
+        // ==================== [核心配置区域已更新] ====================
         const SUPABASE_URL = "https://hxezvumbkwmavphcahcv.supabase.co"; 
-        const SUPABASE_ANON_KEY = "bf2CvVkKr5FvuCwj"; 
+        const SUPABASE_ANON_KEY = "sb_publishable_JK6PQ1vOlP5NL9aQTUiS-Q_Ca6emzlX"; 
         const PUSHDEER_KEY = "PDU41530TPPT6IuAkywJ0iZXEzw64SI5jGxLjuPw4";
         // =======================================================
 
@@ -169,36 +169,4 @@
 
             try {
                 // 1. 写入 Supabase 数据库
-                const { error } = await db.from('orders').insert([
-                    { customer_name: name, contact_info: contact, dining_date: date, items: orderedItems }
-                ]);
-                if (error) throw error;
-
-                // 2. 异步发送微信秒级通知
-                const msgText = `🚨 BandM Kitchen 新订单提醒 🚨\n\n` +
-                                `👤 顾客: ${name}\n` +
-                                `📞 联系方式: ${contact}\n` +
-                                `📅 就餐日期: ${date}\n` +
-                                `🍳 所点菜品:\n${wxTextItems}`;
-
-                await fetch(`https://api2.pushdeer.com/message/push?pushkey=${PUSHDEER_KEY}&text=${encodeURIComponent(msgText)}`);
-
-                alert(i18n[currentLang].success);
-                
-                // 重置表单
-                document.getElementById('cust-name').value = '';
-                document.getElementById('cust-contact').value = '';
-                document.getElementById('dining-date').value = '';
-                document.getElementById('menu-box').innerHTML = `<p class="no-menu">${i18n[currentLang].init}</p>`;
-
-            } catch (err) {
-                console.error(err);
-                alert("提交失败，请重试 / Falha ao enviar: " + err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = i18n[currentLang].submit;
-            }
-        }
-    </script>
-</body>
-</html>
+                const { error } = await db.
