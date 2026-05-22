@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BandM Kitchen - 订餐</title>
-    <!-- 引入 Flatpickr 日历组件的样式 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; color: #333; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .lang-btn { padding: 5px 10px; cursor: pointer; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; color: #333; background-color: #fcfcfc; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .lang-btn { padding: 6px 12px; cursor: pointer; background: #fff; border: 1px solid #ddd; border-radius: 20px; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="text"] { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
-        .menu-container { border: 1px solid #eee; padding: 15px; border-radius: 8px; background: #fafafa; margin-top: 15px; }
-        .dish-item { display: flex; align-items: flex-start; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #eee; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; color: #555; }
+        input[type="text"] { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; }
+        .menu-container { border: 1px solid #eef0f2; padding: 15px; border-radius: 8px; background: #fff; margin-top: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .dish-item { display: flex; align-items: flex-start; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #f5f5f5; }
         .dish-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .dish-item input { margin-top: 4px; margin-right: 10px; }
+        .dish-item input { margin-top: 4px; margin-right: 12px; transform: scale(1.2); }
         .dish-details { flex: 1; }
-        .dish-name { font-weight: bold; }
-        .dish-desc { font-size: 0.9em; color: #666; margin-top: 2px; }
-        .no-menu { color: #999; font-style: italic; }
-        button.submit-btn { width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; margin-top: 20px; }
-        button.submit-btn:hover { background: #218838; }
+        .dish-name { font-weight: bold; font-size: 16px; }
+        .dish-desc { font-size: 0.85em; color: #777; margin-top: 2px; }
+        .no-menu { color: #999; font-style: italic; text-align: center; padding: 10px 0; }
+        button.submit-btn { width: 100%; padding: 14px; background: #0070f3; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 25px; transition: background 0.2s; }
+        button.submit-btn:hover { background: #0051a8; }
+        button.submit-btn:disabled { background: #ccc; cursor: not-allowed; }
     </style>
 </head>
 <body>
@@ -32,7 +32,6 @@
         <button class="lang-btn" id="lang-toggle" onclick="toggleLanguage()">Português</button>
     </div>
 
-    <!-- 1. 顾客基本信息 -->
     <div class="form-group">
         <label id="label-name">您的姓名 / Nome</label>
         <input type="text" id="cust-name" required>
@@ -42,14 +41,11 @@
         <input type="text" id="cust-contact" required>
     </div>
 
-    <!-- 2. 日期选择器 -->
     <div class="form-group">
         <label id="label-date">选择就餐日期 / Escolha a data</label>
-        <!-- Flatpickr 会自动绑定到这个输入框 -->
         <input type="text" id="dining-date" placeholder="请选择日期 / Selecione...">
     </div>
 
-    <!-- 3. 动态菜单显示区 -->
     <h3 id="menu-title">今日菜单 / Menu</h3>
     <div class="menu-container" id="menu-box">
         <p class="no-menu" id="text-init">请先选择就餐日期以加载菜单。</p>
@@ -57,60 +53,41 @@
 
     <button class="submit-btn" id="btn-submit" onclick="submitOrder()">提交订单 / Enviar Pedido</button>
 
-    <!-- ==================== 脚本部分 ==================== -->
-    <!-- 引入 Supabase 官方 JavaScript SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- 引入 Flatpickr 日历组件的 JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script>
-        // 配置你的 Supabase 密钥
+        // ==================== [配置区域：替换你自己的秘钥] ====================
         const SUPABASE_URL = "https://hxezvumbkwmavphcahcv.supabase.co"; 
-        const SUPABASE_ANON_KEY = "bf2CvVkKr5FvuCwj";
+        const SUPABASE_ANON_KEY = "PDU41530TPPT6IuAkywJ0iZXEzw64SI5jGxLjuPw4";
+        const PUSHDEER_KEY = "PDU41530TPPT6IuAkywJ0iZXEzw64SI5jGxLjuPw4";
+        // ===================================================================
+
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // 语种状态：'zh' 为中文，'pt' 为葡萄牙语
         let currentLang = 'zh';
-        let allDishes = []; // 存储从数据库查出来的原始菜品数据
+        let allDishes = []; 
 
-        // 页面多语言文本字典
         const i18n = {
             zh: {
-                title: "BandM Kitchen 点单",
-                langBtn: "Português",
-                name: "您的姓名",
-                contact: "联系方式 (微信/电话)",
-                date: "选择就餐日期",
-                menu: "今日菜单",
-                init: "请先选择就餐日期以加载菜单。",
-                empty: "抱歉，该日期暂无公开菜单供应。",
-                submit: "提交订单"
+                title: "BandM Kitchen 点单", langBtn: "Português", name: "您的姓名", contact: "联系方式 (微信/电话)",
+                date: "选择就餐日期", menu: "今日菜单", init: "请先选择就餐日期以加载菜单。",
+                empty: "抱歉，该日期暂无公开菜单供应。", submit: "提交订单", submitting: "正在提交...", success: "订单提交成功！我们已收到提醒。"
             },
             pt: {
-                title: "Pedido - BandM Kitchen",
-                langBtn: "中文",
-                name: "Seu Nome",
-                contact: "Contacto (WeChat/Telemóvel)",
-                date: "Escolha a data",
-                menu: "Menu do Dia",
-                init: "Por favor, escolha uma data primeiro.",
-                empty: "Desculpe, não há menu disponível para esta data.",
-                submit: "Enviar Pedido"
+                title: "Pedido - BandM Kitchen", langBtn: "中文", name: "Seu Nome", contact: "Contacto (WeChat/Telemóvel)",
+                date: "Escolha a data", menu: "Menu do Dia", init: "Por favor, escolha uma data primeiro.",
+                empty: "Desculpe, não há menu disponível para esta data.", submit: "Enviar Pedido", submitting: "A enviar...", success: "Pedido enviado com sucesso! Já fomos notificados."
             }
         };
 
-        // 初始化日历组件
         flatpickr("#dining-date", {
             dateFormat: "Y-m-d",
-            minDate: "today", // 不允许选过去的日子
+            minDate: "today",
             onChange: function(selectedDates, dateStr) {
-                if (dateStr) {
-                    fetchMenuForDate(dateStr);
-                }
+                if (dateStr) fetchMenuForDate(dateStr);
             }
         });
 
-        // 切换语言的函数
         function toggleLanguage() {
             currentLang = currentLang === 'zh' ? 'pt' : 'zh';
             document.getElementById('lang-toggle').innerText = i18n[currentLang].langBtn;
@@ -120,58 +97,36 @@
             document.getElementById('label-date').innerText = i18n[currentLang].date;
             document.getElementById('menu-title').innerText = i18n[currentLang].menu;
             document.getElementById('btn-submit').innerText = i18n[currentLang].submit;
-            
-            // 重新渲染当前菜单视图（如果已经加载了数据）
             renderMenu();
         }
 
-        // 根据选定日期前往 Supabase 查询菜品
         async function fetchMenuForDate(dateStr) {
             const menuBox = document.getElementById('menu-box');
             menuBox.innerHTML = currentLang === 'zh' ? '<p>菜单加载中...</p>' : '<p>A carregar o menu...</p>';
-
             try {
-                // 查询 available_days 数组中包含该日期的所有菜品
-                let { data, error } = await supabase
-                    .from('dishes')
-                    .select('*')
-                    .contains('available_days', [dateStr]);
-
+                let { data, error } = await supabase.from('dishes').select('*').contains('available_days', [dateStr]);
                 if (error) throw error;
-
                 allDishes = data || [];
                 renderMenu();
-
             } catch (err) {
-                console.error("加载菜单失败:", err);
+                console.error(err);
                 menuBox.innerHTML = `<p style="color:red;">Error: ${err.message}</p>`;
             }
         }
 
-        // 渲染菜单的函数
         function renderMenu() {
             const menuBox = document.getElementById('menu-box');
             const dateInput = document.getElementById('dining-date').value;
-
-            if (!dateInput) {
-                menuBox.innerHTML = `<p class="no-menu">${i18n[currentLang].init}</p>`;
-                return;
-            }
-
-            if (allDishes.length === 0) {
-                menuBox.innerHTML = `<p class="no-menu">${i18n[currentLang].empty}</p>`;
-                return;
-            }
-
-            // 清空容器，开始拼装 HTML
+            if (!dateInput) { menuBox.innerHTML = `<p class="no-menu">${i18n[currentLang].init}</p>`; return; }
+            if (allDishes.length === 0) { menuBox.innerHTML = `<p class="no-menu">${i18n[currentLang].empty}</p>`; return; }
+            
             menuBox.innerHTML = '';
             allDishes.forEach(dish => {
                 const name = currentLang === 'zh' ? dish.name_zh : dish.name_pt;
                 const desc = currentLang === 'zh' ? dish.desc_zh : dish.desc_pt;
-
                 const itemHtml = `
                     <div class="dish-item">
-                        <input type="checkbox" name="dish-select" value="${dish.id}" data-name-zh="${dish.name_zh}">
+                        <input type="checkbox" name="dish-select" value="${dish.id}" data-name-zh="${dish.name_zh}" data-name-pt="${dish.name_pt}">
                         <div class="dish-details">
                             <div class="dish-name">${name}</div>
                             ${desc ? `<div class="dish-desc">${desc}</div>` : ''}
@@ -182,42 +137,68 @@
             });
         }
 
-        // 提交订单的暂留函数（下一节课实现完整写入与提醒）
-        function submitOrder() {
-            const name = document.getElementById('cust-name').value;
-            const contact = document.getElementById('cust-contact').value;
+        // 点单与微信实时通知逻辑
+        async function submitOrder() {
+            const name = document.getElementById('cust-name').value.trim();
+            const contact = document.getElementById('cust-contact').value.trim();
             const date = document.getElementById('dining-date').value;
+            const submitBtn = document.getElementById('btn-submit');
             
             if(!name || !contact || !date) {
                 alert(currentLang === 'zh' ? "请填写完整的姓名、联系方式和日期！" : "Por favor, preencha todos os campos!");
                 return;
             }
 
-            // 获取选中的菜品
             const selectedCheckboxes = document.querySelectorAll('input[name="dish-select"]:checked');
             if (selectedCheckboxes.length === 0) {
                 alert(currentLang === 'zh' ? "请至少选择一道菜品！" : "Por favor, selecione pelo menos um prato!");
                 return;
             }
 
+            submitBtn.disabled = true;
+            submitBtn.innerText = i18n[currentLang].submitting;
+
             let orderedItems = [];
-            selectedCheckboxes.forEach(cb => {
-                orderedItems.push({
-                    dish_id: cb.value,
-                    dish_name_zh: cb.getAttribute('data-name-zh')
-                });
+            let wxTextItems = ""; 
+            
+            selectedCheckboxes.forEach((cb, index) => {
+                const zh = cb.getAttribute('data-name-zh');
+                const pt = cb.getAttribute('data-name-pt');
+                orderedItems.push({ dish_id: cb.value, name_zh: zh, name_pt: pt });
+                wxTextItems += `${index + 1}. ${zh} (${pt})\n`;
             });
 
-            // 打包数据
-            const orderPayload = {
-                customer_name: name,
-                contact_info: contact,
-                dining_date: date,
-                items: orderedItems // 暂存勾选的菜品数组
-            };
+            try {
+                // 1. 写入 Supabase 数据库
+                const { error } = await supabase.from('orders').insert([
+                    { customer_name: name, contact_info: contact, dining_date: date, items: orderedItems }
+                ]);
+                if (error) throw error;
 
-            console.log("准备提交的订单数据:", orderPayload);
-            alert("前端逻辑测试成功！已准备好数据。我们将在下一步将它安全写入数据库并触发 Telegram 提醒。");
+                // 2. 异步发送微信秒级通知 (PushDeer 接口)
+                const msgText = `🚨 BandM Kitchen 新订单提醒 🚨\n\n` +
+                                `👤 顾客: ${name}\n` +
+                                `📞 联系方式: ${contact}\n` +
+                                `📅 就餐日期: ${date}\n` +
+                                `🍳 所点菜品:\n${wxTextItems}`;
+
+                await fetch(`https://api2.pushdeer.com/message/push?pushkey=${PUSHDEER_KEY}&text=${encodeURIComponent(msgText)}`);
+
+                alert(i18n[currentLang].success);
+                
+                // 重置表单
+                document.getElementById('cust-name').value = '';
+                document.getElementById('cust-contact').value = '';
+                document.getElementById('dining-date').value = '';
+                document.getElementById('menu-box').innerHTML = `<p class="no-menu">${i18n[currentLang].init}</p>`;
+
+            } catch (err) {
+                console.error(err);
+                alert("提交失败，请重试 / Falha ao enviar: " + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = i18n[currentLang].submit;
+            }
         }
     </script>
 </body>
