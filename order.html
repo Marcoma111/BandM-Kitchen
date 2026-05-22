@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BandM Kitchen - 订餐</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BandM Kitchen</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -27,12 +27,13 @@
             margin: 0; 
             padding: 0;
             font-family: 'Plus Jakarta Sans', 'Noto Serif SC', sans-serif;
+            -webkit-tap-highlight-color: transparent; /* 移除手机端点击高亮阴影 */
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            padding: 30px 15px;
+            padding: 20px 12px;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -44,26 +45,25 @@
             max-width: 480px;
             background: var(--card-bg);
             border-radius: var(--radius-lg);
-            padding: 30px 24px;
+            padding: 24px 20px;
             box-shadow: 0 10px 30px rgba(14, 34, 56, 0.05);
-            border: 1px solid rgba(0, 0, 0, 0.02);
         }
 
-        /* 头部设计 */
+        /* 头部 */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
             border-bottom: 1px solid #EDF2F7;
-            padding-bottom: 20px;
+            padding-bottom: 16px;
         }
 
         .header-info h2 {
-            font-size: 24px;
+            font-size: 22px;
             color: var(--primary-color);
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .header-info p {
@@ -80,30 +80,23 @@
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
-        .lang-btn:hover {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        /* 表单美化 */
+        /* 表单 */
         .form-section {
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
             font-size: 13px;
             color: var(--primary-color);
-            letter-spacing: 0.3px;
         }
 
         .input-inner {
@@ -121,55 +114,50 @@
 
         input[type="text"] {
             width: 100%;
-            padding: 14px 14px 14px 44px;
+            padding: 12px 14px 12px 44px;
             border: 1.5px solid #E2E8F0;
             border-radius: var(--radius-md);
-            font-size: 15px;
+            font-size: 14px;
             color: var(--text-main);
-            transition: all 0.25s ease;
             background: #FAFCFF;
+            transition: all 0.2s ease;
         }
 
         input[type="text"]:focus {
             outline: none;
             border-color: var(--accent-color);
             background: #FFFFFF;
-            box-shadow: 0 0 0 3px rgba(197, 168, 128, 0.15);
         }
 
-        /* 菜单区域 */
-        .section-title {
-            font-size: 16px;
+        /* 菜单分类展示结构 */
+        .category-block {
+            margin-bottom: 24px;
+        }
+
+        .category-title {
+            font-size: 15px;
             font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .section-title::before {
-            content: '';
+            color: #FFFFFF;
+            background: var(--primary-color);
+            padding: 6px 14px;
+            border-radius: 6px;
+            margin-bottom: 12px;
             display: inline-block;
-            width: 4px;
-            height: 16px;
-            background: var(--accent-color);
-            border-radius: 2px;
+            letter-spacing: 0.5px;
         }
 
         .menu-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 35px;
+            gap: 10px;
         }
 
-        /* 菜品卡片交互优化 */
+        /* 菜品卡片 */
         .dish-card {
             background: #FFFFFF;
             border: 1.5px solid #E2E8F0;
             border-radius: var(--radius-md);
-            padding: 16px;
+            padding: 14px;
             display: flex;
             align-items: center;
             cursor: pointer;
@@ -177,30 +165,22 @@
             user-select: none;
         }
 
-        .dish-card:hover {
-            border-color: var(--accent-color);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-        }
-
         .dish-card.selected {
-            border-color: var(--primary-color);
-            background: rgba(14, 34, 56, 0.02);
+            border-color: var(--accent-color);
+            background: rgba(197, 168, 128, 0.04);
         }
 
         .checkbox-container {
-            margin-right: 16px;
+            margin-right: 14px;
             display: flex;
             align-items: center;
-            justify-content: center;
         }
 
         .dish-card input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             accent-color: var(--primary-color);
-            cursor: pointer;
-            pointer-events: none; /* 让整块卡片接管点击事件 */
+            pointer-events: none;
         }
 
         .dish-details {
@@ -208,14 +188,14 @@
         }
 
         .dish-name {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: var(--primary-color);
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
 
         .dish-desc {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-sub);
             line-height: 1.4;
         }
@@ -223,37 +203,73 @@
         /* 提交按钮 */
         .submit-btn {
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             background: var(--primary-color);
             color: #FFFFFF;
             border: none;
             border-radius: var(--radius-md);
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 5px 15px rgba(14, 34, 56, 0.15);
-        }
-
-        .submit-btn:hover {
-            background: #173354;
-            transform: translateY(-1px);
-            box-shadow: 0 7px 20px rgba(14, 34, 56, 0.2);
+            box-shadow: 0 5px 15px rgba(14, 34, 56, 0.1);
         }
 
         .submit-btn:disabled {
             background: #A0AEC0;
             cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
         }
 
-        /* 加载及状态提示 */
-        .status-msg {
+        /* 手机端定制的高级弹窗提示 */
+        .custom-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(14, 34, 56, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .custom-modal.show {
+            opacity: 1; pointer-events: auto;
+        }
+        .modal-content {
+            background: #FFFFFF;
+            width: 85%; max-width: 340px;
+            padding: 26px;
+            border-radius: var(--radius-lg);
             text-align: center;
-            padding: 30px 0;
-            color: var(--text-sub);
-            font-size: 14px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .custom-modal.show .modal-content {
+            transform: scale(1);
+        }
+        .modal-icon {
+            width: 56px; height: 56px;
+            background: #E6FFFA; color: #319795;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; margin: 0 auto 16px;
+        }
+        .modal-title {
+            font-size: 18px; font-weight: 700; color: var(--primary-color); margin-bottom: 8px;
+        }
+        .modal-text {
+            font-size: 14px; color: var(--text-sub); line-height: 1.5; margin-bottom: 20px;
+        }
+        .modal-btn {
+            width: 100%; padding: 11px;
+            background: var(--primary-color); color: white;
+            border: none; border-radius: var(--radius-md);
+            font-size: 14px; font-weight: 600; cursor: pointer;
+        }
+
+        .status-msg {
+            text-align: center; padding: 30px 0; color: var(--text-sub); font-size: 14px;
         }
     </style>
 </head>
@@ -270,38 +286,46 @@
 
     <div class="form-section">
         <div class="form-group">
-            <label id="label-name">您的姓名 / Seu Nome</label>
+            <label id="label-name">您的姓名</label>
             <div class="input-inner">
                 <i class="fa-regular fa-user"></i>
-                <input type="text" id="cust-name" placeholder="Ex: Marco">
+                <input type="text" id="cust-name" placeholder="请输入您的真实姓名">
             </div>
         </div>
 
         <div class="form-group">
-            <label id="label-contact">联系方式 / Contacto</label>
+            <label id="label-contact">联系方式</label>
             <div class="input-inner">
                 <i class="fa-brands fa-whatsapp"></i>
-                <input type="text" id="cust-contact" placeholder="WeChat / WhatsApp / Telemóvel">
+                <input type="text" id="cust-contact" placeholder="微信 / 手机号 / WhatsApp">
             </div>
         </div>
 
         <div class="form-group">
-            <label id="label-date">就餐日期 / Data do Jantar</label>
+            <label id="label-date">就餐日期</label>
             <div class="input-inner">
                 <i class="fa-regular fa-calendar"></i>
-                <input type="text" id="dining-date" placeholder="Selecione a data...">
+                <input type="text" id="dining-date" placeholder="请选择预订日期">
             </div>
         </div>
     </div>
 
-    <div class="section-title" id="text-menu-title">今日尊享菜单 / Menu</div>
-    <div class="menu-list" id="menu-box">
+    <div id="categories-container">
         <div class="status-msg"><i class="fas fa-spinner fa-spin"></i> Loading menu...</div>
     </div>
 
     <button class="submit-btn" id="btn-submit" onclick="submitOrder()">
-        提交订单 / Enviar Pedido
+        提交订单
     </button>
+</div>
+
+<div class="custom-modal" id="success-modal">
+    <div class="modal-content">
+        <div class="modal-icon"><i class="fas fa-check"></i></div>
+        <div class="modal-title" id="modal-title-text">提交成功</div>
+        <div class="modal-text" id="modal-desc-text">我们将为您精心准备美味佳肴。</div>
+        <button class="modal-btn" id="modal-btn-text" onclick="closeModalAndReload()">我知道了</button>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -310,7 +334,6 @@
 <script>
     // ==================== [核心数据配置中心] ====================
     const SUPABASE_URL = "https://hxezvumbkwmavphcahcv.supabase.co"; 
-    // ⚠️ 请在这里填入您在 Supabase API 页面中找到的、巨长的、以 eyJ 开头的 anon public 密钥
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4ZXp2dW1ia3dtYXZwaGNhaGN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NDk4NDgsImV4cCI6MjA5NTAyNTg0OH0.TPEzo0Rf9cjj3muAO9tfx-W3jc54vHFbl20j6U4tbXs"; 
     const PUSHDEER_KEY = "PDU41530TPPT6IuAkywJ0iZXEzw64SI5jGxLjuPw4";
     // ==========================================================
@@ -319,84 +342,135 @@
     let currentLang = 'zh';
     let globalDishes = []; 
 
-    // 中葡双语国际化配置
+    // 绝对隔离的纯净中文与纯净葡语字典
     const i18n = {
         zh: {
             title: "BandM Kitchen 点单", subtitle: "探索极致风味 · 开启私享点单", lang: "Português",
-            name: "您的姓名", contact: "联系方式", date: "就餐日期", menu: "尊享菜单", submit: "提交订单",
+            name: "您的姓名", contact: "联系方式", date: "就餐日期", submit: "提交订单",
+            ph_name: "请输入您的真实姓名", ph_contact: "微信 / 手机号 / WhatsApp", ph_date: "请选择预订日期",
             alert_name: "请填写您的姓名！", alert_contact: "请填写您的联系方式！", alert_date: "请选择就餐日期！",
-            alert_dish: "请至少勾选一道美味菜品！", submitting: "正在打包提交...", success: "订单提交成功！我们已通过 App 收到通知。"
+            alert_dish: "请至少勾选一道美味菜品！", submitting: "正在打包提交...", 
+            success_title: "订单提交成功", success_desc: "您的菜品已成功预订，我们将为您精心准备美味。", success_btn: "我知道了"
         },
         pt: {
             title: "BandM Kitchen", subtitle: "Sabores exclusivos para o seu dia", lang: "中文",
-            name: "Seu Nome", contact: "Contacto", date: "Data do Jantar", menu: "Menu Exclusivo", submit: "Enviar Pedido",
+            name: "Seu Nome", contact: "Contacto", date: "Data do Jantar", submit: "Enviar Pedido",
+            ph_name: "Ex: Marco", ph_contact: "WeChat / WhatsApp / Telemóvel", ph_date: "Selecione a data...",
             alert_name: "Por favor, introduza o seu nome!", alert_contact: "Por favor, introduza o seu contacto!", alert_date: "Por favor, escolha a data!",
-            alert_dish: "Selecione pelo menos um prato do menu!", submitting: "A enviar...", success: "Pedido enviado com sucesso! Já fomos notificados no App."
+            alert_dish: "Selecione pelo menos um prato do menu!", submitting: "A enviar...", 
+            success_title: "Pedido Enviado", success_desc: "O seu pedido foi registado com sucesso. Estaremos prontos para o servir.", success_btn: "Confirmar"
         }
     };
 
-    // 初始化日历插件
-    flatpickr("#dining-date", {
-        dateFormat: "Y-m-d",
-        minDate: "today"
-    });
+    // 预设品类映射表（干净利落区隔中葡文大类）
+    const categoryMapping = {
+        zh: { "SOPAS": "SOPAS / 汤类", "CARNES": "CARNES / 肉类", "MARISCOS": "MARISCOS / 海鲜", "SALTEADOS": "SALTEADOS / 小炒", "CHURRASCO": "CHURRASCO / 烤制", "ACOMPANHAMENTOS": "ACOMPANHAMENTOS / 主食", "SOBREMESAS": "SOBREMESAS / 甜点" },
+        pt: { "SOPAS": "SOPAS", "CARNES": "CARNES", "MARISCOS": "MARISCOS", "SALTEADOS": "SALTEADOS", "CHURRASCO": "CHURRASCO", "ACOMPANHAMENTOS": "ACOMPANHAMENTOS", "SOBREMESAS": "SOBREMESAS" }
+    };
 
-    // 语言切换控制
+    // 初始化日历
+    flatpickr("#dining-date", { dateFormat: "Y-m-d", minDate: "today" });
+
+    // 智能品类自动归类逻辑
+    function getCategoryKey(dish) {
+        const pt = dish.name_pt.toLowerCase();
+        if (pt.includes('sopa') || pt.includes('canja')) return 'SOPAS';
+        if (pt.includes('carne') || pt.includes('peito') || pt.includes('sukiyaki') || pt.includes('borrego') || pt.includes('entrecosto') || pt.includes('moelas') || pt.includes('frango')) {
+            if (pt.includes('salteada') || pt.includes('picada') || pt.includes('com alho-francês') || pt.includes('malagueta') || pt.includes('três copas')) return 'SALTEADOS';
+            if (pt.includes('com mel') || pt.includes('com cominhos')) return 'CHURRASCO';
+            return 'CARNES';
+        }
+        if (pt.includes('marisco')) return 'MARISCOS';
+        if (pt.includes('massa') || pt.includes('bolinhos')) {
+            if (pt.includes('arroz glutinoso')) return 'SOBREMESAS';
+            return 'ACOMPANHAMENTOS';
+        }
+        if (pt.includes('tremella') || pt.includes('feijão')) return 'SOBREMESAS';
+        return 'CARNES'; // 默认底色归类
+    }
+
     function toggleLanguage() {
         currentLang = currentLang === 'zh' ? 'pt' : 'zh';
         document.getElementById('btn-lang').innerText = i18n[currentLang].lang;
         document.getElementById('text-title').innerText = i18n[currentLang].title;
         document.getElementById('text-subtitle').innerText = i18n[currentLang].subtitle;
-        document.getElementById('label-name').innerText = i18n[currentLang].name + " / Seu Nome";
-        document.getElementById('label-contact').innerText = i18n[currentLang].contact + " / Contacto";
-        document.getElementById('label-date').innerText = i18n[currentLang].date + " / Data do Jantar";
-        document.getElementById('text-menu-title').innerText = i18n[currentLang].menu;
+        
+        document.getElementById('label-name').innerText = i18n[currentLang].name;
+        document.getElementById('cust-name').placeholder = i18n[currentLang].ph_name;
+        
+        document.getElementById('label-contact').innerText = i18n[currentLang].contact;
+        document.getElementById('cust-contact').placeholder = i18n[currentLang].ph_contact;
+        
+        document.getElementById('label-date').innerText = i18n[currentLang].date;
+        document.getElementById('dining-date').placeholder = i18n[currentLang].ph_date;
+        
         document.getElementById('btn-submit').innerText = i18n[currentLang].submit;
-        renderMenu();
+        renderCategorizedMenu();
     }
 
-    // 页面加载自动获取全量菜品
     async function loadAllDishes() {
         try {
             let { data, error } = await db.from('dishes').select('*');
             if (error) throw error;
             globalDishes = data || [];
-            renderMenu();
+            renderCategorizedMenu();
         } catch (err) {
             console.error(err);
-            document.getElementById('menu-box').innerHTML = `<div class="status-msg" style="color:red;">Error: ${err.message}</div>`;
+            document.getElementById('categories-container').innerHTML = `<div class="status-msg" style="color:red;">Error: ${err.message}</div>`;
         }
     }
 
-    // 渲染菜单视图
-    function renderMenu() {
-        const menuBox = document.getElementById('menu-box');
+    // 核心函数：根据分类切分区块并展示菜单
+    function renderCategorizedMenu() {
+        const container = document.getElementById('categories-container');
         if (globalDishes.length === 0) {
-            menuBox.innerHTML = '<div class="status-msg">菜单空空如也 / Sem pratos disponíveis</div>';
+            container.innerHTML = '<div class="status-msg">菜单空空如也 / Sem pratos disponíveis</div>';
             return;
         }
 
-        menuBox.innerHTML = '';
+        // 把菜品塞入对应分类组
+        const groups = { SOPAS: [], CARNES: [], MARISCOS: [], SALTEADOS: [], CHURRASCO: [], ACOMPANHAMENTOS: [], SOBREMESAS: [] };
         globalDishes.forEach(dish => {
-            const name = currentLang === 'zh' ? dish.name_zh : dish.name_pt;
-            const desc = currentLang === 'zh' ? dish.desc_zh : dish.desc_pt;
-            
-            const cardHtml = `
-                <div class="dish-card" onclick="selectDishCard(this)">
-                    <div class="checkbox-container">
-                        <input type="checkbox" name="dish-checkbox" value="${dish.id}" data-zh="${dish.name_zh}" data-pt="${dish.name_pt}">
+            const cat = getCategoryKey(dish);
+            if (groups[cat]) groups[cat].push(dish);
+        });
+
+        container.innerHTML = '';
+
+        // 按品类组顺序渲染
+        for (const [catKey, dishes] of Object.entries(groups)) {
+            if (dishes.length === 0) continue;
+
+            const groupTitle = categoryMapping[currentLang][catKey];
+            let dishesHtml = '';
+
+            dishes.forEach(dish => {
+                const name = currentLang === 'zh' ? dish.name_zh : dish.name_pt;
+                const desc = currentLang === 'zh' ? dish.desc_zh : dish.desc_pt;
+
+                dishesHtml += `
+                    <div class="dish-card" onclick="selectDishCard(this)">
+                        <div class="checkbox-container">
+                            <input type="checkbox" name="dish-checkbox" value="${dish.id}" data-zh="${dish.name_zh}" data-pt="${dish.name_pt}">
+                        </div>
+                        <div class="dish-details">
+                            <div class="dish-name">${name}</div>
+                            ${desc ? `<div class="dish-desc">${desc}</div>` : ''}
+                        </div>
                     </div>
-                    <div class="dish-details">
-                        <div class="dish-name">${name}</div>
-                        ${desc ? `<div class="dish-desc">${desc}</div>` : ''}
-                    </div>
+                `;
+            });
+
+            const blockHtml = `
+                <div class="category-block">
+                    <div class="category-title">${groupTitle}</div>
+                    <div class="menu-list">${dishesHtml}</div>
                 </div>
             `;
-            menuBox.insertAdjacentHTML('beforeend', cardHtml);
-        });
+            container.insertAdjacentHTML('beforeend', blockHtml);
+        }
     }
 
-    // 点击整块卡片勾选/反选交互
     function selectDishCard(cardElement) {
         const checkbox = cardElement.querySelector('input[type="checkbox"]');
         checkbox.checked = !checkbox.checked;
@@ -407,14 +481,12 @@
         }
     }
 
-    // 提交订单及推送
     async function submitOrder() {
         const name = document.getElementById('cust-name').value.trim();
         const contact = document.getElementById('cust-contact').value.trim();
         const date = document.getElementById('dining-date').value;
         const submitBtn = document.getElementById('btn-submit');
 
-        // 表单信息非空校验
         if (!name) { alert(i18n[currentLang].alert_name); return; }
         if (!contact) { alert(i18n[currentLang].alert_contact); return; }
         if (!date) { alert(i18n[currentLang].alert_date); return; }
@@ -422,7 +494,6 @@
         const checkedBoxes = document.querySelectorAll('input[name="dish-checkbox"]:checked');
         if (checkedBoxes.length === 0) { alert(i18n[currentLang].alert_dish); return; }
 
-        // 防止多击，锁定状态
         submitBtn.disabled = true;
         submitBtn.innerText = i18n[currentLang].submitting;
 
@@ -437,13 +508,13 @@
         });
 
         try {
-            // 1. 存入 Supabase 后台数据库
+            // 1. 数据无缝入库
             const { error } = await db.from('orders').insert([
                 { customer_name: name, contact_info: contact, dining_date: date, items: dbItems }
             ]);
             if (error) throw error;
 
-            // 2. 发送 PushDeer App 通知（加入 no-cors 模式，完美防止因跨域政策导致的假报错拦截）
+            // 2. 毫秒级静默推送至 App
             const msgContent = `🚨 BandM Kitchen 新订单提醒 🚨\n\n` +
                                `👤 顾客姓名: ${name}\n` +
                                `📞 联系方式: ${contact}\n` +
@@ -454,20 +525,26 @@
                 mode: 'no-cors'
             });
 
-            alert(i18n[currentLang].success);
+            // 3. 呼出高奢定制版弹窗（手机端体验拉满）
+            document.getElementById('modal-title-text').innerText = i18n[currentLang].success_title;
+            document.getElementById('modal-desc-text').innerText = i18n[currentLang].success_desc;
+            document.getElementById('modal-btn-text').innerText = i18n[currentLang].success_btn;
             
-            // 成功后自动重置页面状态
-            location.reload();
+            document.getElementById('success-modal').classList.add('show');
 
         } catch (err) {
             console.error(err);
-            alert("提交失败，请检查网络重试 / Falha ao enviar: " + err.message);
+            alert("Falha / 提交失败: " + err.message);
             submitBtn.disabled = false;
             submitBtn.innerText = i18n[currentLang].submit;
         }
     }
 
-    // 页面初始化加载
+    function closeModalAndReload() {
+        document.getElementById('success-modal').classList.remove('show');
+        location.reload();
+    }
+
     window.onload = loadAllDishes;
 </script>
 </body>
