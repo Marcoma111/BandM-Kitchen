@@ -57,13 +57,12 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script>
-        // ==================== [配置区域：替换你自己的秘钥] ====================
-        const SUPABASE_URL = "YOUR_SUPABASE_URL"; 
-        const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+        // ==================== [核心配置区域已完全锁死] ====================
+        const SUPABASE_URL = "https://hxezvumbkwmavphcahcv.supabase.co"; 
+        const SUPABASE_ANON_KEY = "bf2CvVkKr5FvuCwj"; 
         const PUSHDEER_KEY = "PDU41530TPPT6IuAkywJ0iZXEzw64SI5jGxLjuPw4";
-        // ===================================================================
+        // =======================================================
 
-        // 修正：使用 db 作为实例名，避免与全局 supabase 冲突
         const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         let currentLang = 'zh';
         let allDishes = []; 
@@ -105,7 +104,6 @@
             const menuBox = document.getElementById('menu-box');
             menuBox.innerHTML = currentLang === 'zh' ? '<p>菜单加载中...</p>' : '<p>A carregar o menu...</p>';
             try {
-                // 修正：使用 db 调用
                 let { data, error } = await db.from('dishes').select('*').contains('available_days', [dateStr]);
                 if (error) throw error;
                 allDishes = data || [];
@@ -170,7 +168,7 @@
             });
 
             try {
-                // 1. 写入 Supabase 数据库 (修正：使用 db 调用)
+                // 1. 写入 Supabase 数据库
                 const { error } = await db.from('orders').insert([
                     { customer_name: name, contact_info: contact, dining_date: date, items: orderedItems }
                 ]);
