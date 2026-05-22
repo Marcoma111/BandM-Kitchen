@@ -27,7 +27,7 @@
             margin: 0; 
             padding: 0;
             font-family: 'Plus Jakarta Sans', 'Noto Serif SC', sans-serif;
-            -webkit-tap-highlight-color: transparent; /* 移除手机端点击高亮阴影 */
+            -webkit-tap-highlight-color: transparent; /* 消除移动端点击阴影 */
         }
 
         body {
@@ -49,7 +49,7 @@
             box-shadow: 0 10px 30px rgba(14, 34, 56, 0.05);
         }
 
-        /* 头部 */
+        /* 头部导航区域 */
         .header {
             display: flex;
             justify-content: space-between;
@@ -80,9 +80,10 @@
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        /* 表单 */
+        /* 表单输入区域 */
         .form-section {
             margin-bottom: 24px;
         }
@@ -135,11 +136,11 @@
         }
 
         .category-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             color: #FFFFFF;
             background: var(--primary-color);
-            padding: 6px 14px;
+            padding: 5px 12px;
             border-radius: 6px;
             margin-bottom: 12px;
             display: inline-block;
@@ -152,7 +153,7 @@
             gap: 10px;
         }
 
-        /* 菜品卡片 */
+        /* 菜品选择卡片 */
         .dish-card {
             background: #FFFFFF;
             border: 1.5px solid #E2E8F0;
@@ -180,7 +181,7 @@
             width: 18px;
             height: 18px;
             accent-color: var(--primary-color);
-            pointer-events: none;
+            pointer-events: none; /* 让整张卡片统一承载点击事件 */
         }
 
         .dish-details {
@@ -212,6 +213,7 @@
             font-weight: 700;
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(14, 34, 56, 0.1);
+            transition: all 0.2s ease;
         }
 
         .submit-btn:disabled {
@@ -219,7 +221,7 @@
             cursor: not-allowed;
         }
 
-        /* 手机端定制的高级弹窗提示 */
+        /* 手机移动端高拟真原生弹窗遮罩 */
         .custom-modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -237,8 +239,8 @@
         }
         .modal-content {
             background: #FFFFFF;
-            width: 85%; max-width: 340px;
-            padding: 26px;
+            width: 85%; max-width: 320px;
+            padding: 24px;
             border-radius: var(--radius-lg);
             text-align: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
@@ -249,20 +251,20 @@
             transform: scale(1);
         }
         .modal-icon {
-            width: 56px; height: 56px;
+            width: 50px; height: 50px;
             background: #E6FFFA; color: #319795;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 24px; margin: 0 auto 16px;
+            font-size: 22px; margin: 0 auto 14px;
         }
         .modal-title {
             font-size: 18px; font-weight: 700; color: var(--primary-color); margin-bottom: 8px;
         }
         .modal-text {
-            font-size: 14px; color: var(--text-sub); line-height: 1.5; margin-bottom: 20px;
+            font-size: 13px; color: var(--text-sub); line-height: 1.5; margin-bottom: 20px;
         }
         .modal-btn {
-            width: 100%; padding: 11px;
+            width: 100%; padding: 12px;
             background: var(--primary-color); color: white;
             border: none; border-radius: var(--radius-md);
             font-size: 14px; font-weight: 600; cursor: pointer;
@@ -342,7 +344,7 @@
     let currentLang = 'zh';
     let globalDishes = []; 
 
-    // 绝对隔离的纯净中文与纯净葡语字典
+    // 严苛语言区隔字典：确保页面绝不混杂
     const i18n = {
         zh: {
             title: "BandM Kitchen 点单", subtitle: "探索极致风味 · 开启私享点单", lang: "Português",
@@ -350,7 +352,8 @@
             ph_name: "请输入您的真实姓名", ph_contact: "微信 / 手机号 / WhatsApp", ph_date: "请选择预订日期",
             alert_name: "请填写您的姓名！", alert_contact: "请填写您的联系方式！", alert_date: "请选择就餐日期！",
             alert_dish: "请至少勾选一道美味菜品！", submitting: "正在打包提交...", 
-            success_title: "订单提交成功", success_desc: "您的菜品已成功预订，我们将为您精心准备美味。", success_btn: "我知道了"
+            success_title: "订单提交成功", success_desc: "您的菜品已成功预订，我们将为您精心准备美味。", success_btn: "我知道了",
+            cat_default: "其他菜品"
         },
         pt: {
             title: "BandM Kitchen", subtitle: "Sabores exclusivos para o seu dia", lang: "中文",
@@ -358,36 +361,21 @@
             ph_name: "Ex: Marco", ph_contact: "WeChat / WhatsApp / Telemóvel", ph_date: "Selecione a data...",
             alert_name: "Por favor, introduza o seu nome!", alert_contact: "Por favor, introduza o seu contacto!", alert_date: "Por favor, escolha a data!",
             alert_dish: "Selecione pelo menos um prato do menu!", submitting: "A enviar...", 
-            success_title: "Pedido Enviado", success_desc: "O seu pedido foi registado com sucesso. Estaremos prontos para o servir.", success_btn: "Confirmar"
+            success_title: "Pedido Enviado", success_desc: "O seu pedido foi registado com sucesso. Estaremos prontos para o servir.", success_btn: "Confirmar",
+            cat_default: "Outros Pratos"
         }
     };
 
-    // 预设品类映射表（干净利落区隔中葡文大类）
+    // 基于数据库真正 category 值的纯净中葡分类名转换映射
     const categoryMapping = {
-        zh: { "SOPAS": "SOPAS / 汤类", "CARNES": "CARNES / 肉类", "MARISCOS": "MARISCOS / 海鲜", "SALTEADOS": "SALTEADOS / 小炒", "CHURRASCO": "CHURRASCO / 烤制", "ACOMPANHAMENTOS": "ACOMPANHAMENTOS / 主食", "SOBREMESAS": "SOBREMESAS / 甜点" },
+        zh: { "SOPAS": "汤类", "CARNES": "肉类", "MARISCOS": "海鲜", "SALTEADOS": "小炒", "CHURRASCO": "烤制", "ACOMPANHAMENTOS": "主食", "SOBREMESAS": "甜点" },
         pt: { "SOPAS": "SOPAS", "CARNES": "CARNES", "MARISCOS": "MARISCOS", "SALTEADOS": "SALTEADOS", "CHURRASCO": "CHURRASCO", "ACOMPANHAMENTOS": "ACOMPANHAMENTOS", "SOBREMESAS": "SOBREMESAS" }
     };
 
-    // 初始化日历
-    flatpickr("#dining-date", { dateFormat: "Y-m-d", minDate: "today" });
+    // 菜单品类的精美展示排序规则
+    const categoryOrder = ["SOPAS", "CARNES", "MARISCOS", "SALTEADOS", "CHURRASCO", "ACOMPANHAMENTOS", "SOBREMESAS"];
 
-    // 智能品类自动归类逻辑
-    function getCategoryKey(dish) {
-        const pt = dish.name_pt.toLowerCase();
-        if (pt.includes('sopa') || pt.includes('canja')) return 'SOPAS';
-        if (pt.includes('carne') || pt.includes('peito') || pt.includes('sukiyaki') || pt.includes('borrego') || pt.includes('entrecosto') || pt.includes('moelas') || pt.includes('frango')) {
-            if (pt.includes('salteada') || pt.includes('picada') || pt.includes('com alho-francês') || pt.includes('malagueta') || pt.includes('três copas')) return 'SALTEADOS';
-            if (pt.includes('com mel') || pt.includes('com cominhos')) return 'CHURRASCO';
-            return 'CARNES';
-        }
-        if (pt.includes('marisco')) return 'MARISCOS';
-        if (pt.includes('massa') || pt.includes('bolinhos')) {
-            if (pt.includes('arroz glutinoso')) return 'SOBREMESAS';
-            return 'ACOMPANHAMENTOS';
-        }
-        if (pt.includes('tremella') || pt.includes('feijão')) return 'SOBREMESAS';
-        return 'CARNES'; // 默认底色归类
-    }
+    flatpickr("#dining-date", { dateFormat: "Y-m-d", minDate: "today" });
 
     function toggleLanguage() {
         currentLang = currentLang === 'zh' ? 'pt' : 'zh';
@@ -410,6 +398,7 @@
 
     async function loadAllDishes() {
         try {
+            // 直接读取经过真正清洗入库的 category 列
             let { data, error } = await db.from('dishes').select('*');
             if (error) throw error;
             globalDishes = data || [];
@@ -420,30 +409,43 @@
         }
     }
 
-    // 核心函数：根据分类切分区块并展示菜单
     function renderCategorizedMenu() {
         const container = document.getElementById('categories-container');
         if (globalDishes.length === 0) {
-            container.innerHTML = '<div class="status-msg">菜单空空如也 / Sem pratos disponíveis</div>';
+            container.innerHTML = `<div class="status-msg">${currentLang === 'zh' ? '菜单空空如也' : 'Sem pratos disponíveis'}</div>`;
             return;
         }
 
-        // 把菜品塞入对应分类组
-        const groups = { SOPAS: [], CARNES: [], MARISCOS: [], SALTEADOS: [], CHURRASCO: [], ACOMPANHAMENTOS: [], SOBREMESAS: [] };
+        // 初始化品类分流桶
+        const groups = {};
+        categoryOrder.forEach(cat => groups[cat] = []);
+        const unclassifiedKey = "OTHER";
+        groups[unclassifiedKey] = [];
+
+        // 精准利用数据库 category 列进行物理分组
         globalDishes.forEach(dish => {
-            const cat = getCategoryKey(dish);
-            if (groups[cat]) groups[cat].push(dish);
+            const dbCat = dish.category ? dish.category.toUpperCase().trim() : unclassifiedKey;
+            if (groups[dbCat]) {
+                groups[dbCat].push(dish);
+            } else {
+                if (!groups[dbCat]) groups[dbCat] = [];
+                groups[dbCat].push(dish);
+            }
         });
 
         container.innerHTML = '';
 
-        // 按品类组顺序渲染
-        for (const [catKey, dishes] of Object.entries(groups)) {
-            if (dishes.length === 0) continue;
+        // 合并排序链，确保规范且具备健壮的容错性
+        const allKeys = [...categoryOrder, ...Object.keys(groups).filter(k => !categoryOrder.includes(k))];
 
-            const groupTitle = categoryMapping[currentLang][catKey];
+        allKeys.forEach(catKey => {
+            const dishes = groups[catKey];
+            if (!dishes || dishes.length === 0) return;
+
+            // 彻底语言隔绝：防止分类出现中葡双拼
+            const groupTitle = categoryMapping[currentLang][catKey] || i18n[currentLang].cat_default;
+
             let dishesHtml = '';
-
             dishes.forEach(dish => {
                 const name = currentLang === 'zh' ? dish.name_zh : dish.name_pt;
                 const desc = currentLang === 'zh' ? dish.desc_zh : dish.desc_pt;
@@ -468,7 +470,7 @@
                 </div>
             `;
             container.insertAdjacentHTML('beforeend', blockHtml);
-        }
+        });
     }
 
     function selectDishCard(cardElement) {
@@ -497,35 +499,40 @@
         submitBtn.disabled = true;
         submitBtn.innerText = i18n[currentLang].submitting;
 
+        // 订单明细：完美记录每名客户预订的具体菜品细节数据
         let dbItems = [];
-        let wxNotifyText = "";
+        let notifyText = "";
 
         checkedBoxes.forEach((cb, index) => {
             const zhName = cb.getAttribute('data-zh');
             const ptName = cb.getAttribute('data-pt');
-            dbItems.push({ dish_id: cb.value, name_zh: zhName, name_pt: ptName });
-            wxNotifyText += `${index + 1}. ${zhName} (${ptName})\n`;
+            dbItems.push({ 
+                dish_id: cb.value, 
+                name_zh: zhName, 
+                name_pt: ptName 
+            });
+            notifyText += `${index + 1}. ${zhName} (${ptName})\n`;
         });
 
         try {
-            // 1. 数据无缝入库
+            # 1. 结构化 JSON 存入 orders 表的 items 字段中进行记录沉淀
             const { error } = await db.from('orders').insert([
                 { customer_name: name, contact_info: contact, dining_date: date, items: dbItems }
             ]);
             if (error) throw error;
 
-            // 2. 毫秒级静默推送至 App
+            # 2. 静默推送至 PushDeer
             const msgContent = `🚨 BandM Kitchen 新订单提醒 🚨\n\n` +
                                `👤 顾客姓名: ${name}\n` +
                                `📞 联系方式: ${contact}\n` +
                                `📅 就餐日期: ${date}\n` +
-                               `🍳 预订菜品:\n${wxNotifyText}`;
+                               `🍳 预订菜品:\n${notifyText}`;
 
             await fetch(`https://api2.pushdeer.com/message/push?pushkey=${PUSHDEER_KEY}&text=${encodeURIComponent(msgContent)}`, {
                 mode: 'no-cors'
             });
 
-            // 3. 呼出高奢定制版弹窗（手机端体验拉满）
+            # 3. 呼出手机端完美适配的沉浸式高级弹窗
             document.getElementById('modal-title-text').innerText = i18n[currentLang].success_title;
             document.getElementById('modal-desc-text').innerText = i18n[currentLang].success_desc;
             document.getElementById('modal-btn-text').innerText = i18n[currentLang].success_btn;
