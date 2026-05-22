@@ -2,232 +2,92 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BandM Kitchen | 家庭厨房菜单</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BandM Kitchen</title>
     <style>
         :root {
-            --primary-color: #d2691e;
-            --secondary-color: #5d4037;
-            --accent-color: #e44d26;
-            --bg-color: #fdf5e6;
+            --primary-color: #0E2238;   /* 奢华深蓝 */
+            --accent-color: #C5A880;    /* 雅致香槟金 */
+            --bg-color: #F8F9FA;        /* 清爽底色 */
+            --card-bg: #FFFFFF;
+            --text-sub: #718096;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
             background-color: var(--bg-color);
-            margin: 0;
-            padding: 15px;
-            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 12px;
         }
 
         .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 40px 24px;
+            box-shadow: 0 10px 30px rgba(14, 34, 56, 0.05);
+            text-align: center;
         }
 
         header {
-            text-align: center;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--primary-color);
-            margin-bottom: 20px;
+            margin-bottom: 32px;
         }
 
-        h1 { color: var(--primary-color); margin: 0; font-size: 1.6rem; }
-        .subtitle { color: #888; font-size: 0.85rem; margin-top: 5px; }
-
-        .category-title {
-            background: #ffe4b5;
-            color: var(--secondary-color);
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin: 25px 0 10px 0;
-            display: flex;
-            justify-content: space-between;
+        h1 { 
+            color: var(--primary-color); 
+            font-size: 26px; 
+            font-weight: 700; 
+            letter-spacing: 0.5px;
         }
 
-        .menu-item {
-            display: flex;
-            padding: 15px 0;
-            border-bottom: 1px dashed #eee;
-            align-items: center;
-            cursor: pointer;
+        .subtitle { 
+            color: var(--text-sub); 
+            font-size: 14px; 
+            margin-top: 6px; 
+            line-height: 1.5;
         }
 
-        .checkbox-custom {
-            width: 22px;
-            height: 22px;
-            margin-right: 15px;
-            accent-color: var(--primary-color);
-        }
-
-        .item-info { flex: 1; }
-        .name-pt { font-weight: bold; display: block; font-size: 1.05rem; }
-        .name-zh { color: var(--secondary-color); font-size: 0.95rem; display: block; margin-top: 2px; }
-        .ingredients { font-size: 0.8rem; color: #999; margin-top: 4px; font-style: italic; }
-
-        .tag-spicy { color: var(--accent-color); font-size: 0.8rem; margin-left: 5px; }
-
-        .footer-sticky {
-            position: sticky;
-            bottom: 10px;
-            margin-top: 30px;
-            background: rgba(255,255,255,0.95);
-            padding: 15px;
-            border-radius: 15px;
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-
-        .order-btn {
+        .nav-btn {
+            display: block;
             background: var(--primary-color);
             color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            width: 100%;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(210, 105, 30, 0.3);
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(14, 34, 56, 0.1);
+            transition: all 0.2s ease;
         }
 
-        .order-btn:active { transform: scale(0.98); }
+        .nav-btn:active { 
+            transform: scale(0.97); 
+            background: #163252;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>BandM Kitchen 🍳</h1>
-        <p class="subtitle">Menu Bilíngue / 中葡双语菜单</p>
+        <h1>BandM Kitchen</h1>
+        <p class="subtitle">Sabores exclusivos<br>开启您的专属私享点单</p>
     </header>
 
-    <div id="menu-display"></div>
-
-    <div class="footer-sticky">
-        <button class="order-btn" onclick="submitOrder()">Confirmar Pedido / 确认下单</button>
-    </div>
+    <a href="#" class="nav-btn">
+        Entrar no Menu / 进入点菜系统
+    </a>
 </div>
-
-<script>
-    // 完整的双语菜单数据
-    const fullMenu = [
-        {
-            cat: "SOPAS / 汤类",
-            items: [
-                { pt: "Sopa de Carne de Vaca Limpa", zh: "清汤牛肉", info: "Carne de vaca" },
-                { pt: "Sopa de Borrego Limpa", zh: "清汤羊肉", info: "Borrego" },
-                { pt: "Canja de Galinha Saudável", zh: "滋补鸡汤", info: "Galinha" },
-                { pt: "Sopa de Pato à Antiga", zh: "老鸭汤", info: "Pato" },
-                { pt: "Sopa de Mão de Porco", zh: "猪蹄汤", info: "Mão de porco" }
-            ]
-        },
-        {
-            cat: "CARNES / 肉类",
-            items: [
-                { pt: "Carne de Vaca em Caldo Picante", zh: "水煮牛肉", info: "Carne de vaca", spicy: 2 },
-                { pt: "Carne de Vaca em Caldo Ácido", zh: "酸汤牛肉", info: "Carne de vaca", spicy: 1 },
-                { pt: "Peito de Vaca com Tomate", zh: "番茄牛腩", info: "Peito de vaca, tomate" },
-                { pt: "Sukiyaki (Caseira)", zh: "日式寿喜烧(家常版)", info: "Carne de vaca, vegetais" },
-                { pt: "Borrego Estufado (Molho de Soja)", zh: "红烧羊肉", info: "Borrego" },
-                { pt: "Entrecosto Estufado", zh: "红烧/糖醋排骨", info: "Soja / Agridoce / Misto" },
-                { pt: "Wok Seco (Gan Guo)", zh: "干锅鸡翅/排骨", info: "Asas de frango ou entrecosto", spicy: 2 },
-                { pt: "Pestiscos em Salmoura (Lu Wei)", zh: "卤味(猪蹄/耳/鸡爪)", info: "Mão/orelha de porco ou garras de frango" }
-            ]
-        },
-        {
-            cat: "MARISCOS / 海鲜",
-            items: [
-                { pt: "Marisco Salteado no Wok", zh: "爆炒海鲜", info: "Marisco variado" },
-                { pt: "Marisco a Vapor com Massa de Arroz", zh: "蒜蓉粉丝蒸海鲜", info: "Marisco, alho, vermicelli" },
-                { pt: "Marisco ao Alho", zh: "蒜香海鲜", info: "Azeite ou Manteiga" }
-            ]
-        },
-        {
-            cat: "SALTEADOS / 小炒",
-            items: [
-                { pt: "Carne de Vaca Salteada (Hunan)", zh: "小炒黄牛肉", info: "Carne de vaca, malagueta", spicy: 2 },
-                { pt: "Carne de Vaca Picada com Aipo", zh: "芹菜牛肉末", info: "Carne de vaca, aipo" },
-                { pt: "Borrego Salteado com Alho-Francês", zh: "大葱炒羊肉", info: "Borrego, alho-francês" },
-                { pt: "Moelas de Frango com Malagueta", zh: "泡椒鸡胗", info: "Moelas, malagueta", spicy: 2 },
-                { pt: "Frango Três Copas (Sichuan)", zh: "三杯鸡", info: "Frango", spicy: 1 }
-            ]
-        },
-        {
-            cat: "CHURRASCO / 烤制",
-            items: [
-                { pt: "Entrecosto com Mel", zh: "蜜汁烤排骨", info: "Entrecosto, mel" },
-                { pt: "Costeletas de Borrego com Cominhos", zh: "孜然羊排", info: "Borrego, cominhos" }
-            ]
-        },
-        {
-            cat: "ACOMPANHAMENTOS / 主食",
-            items: [
-                { pt: "Massa de Arroz/Trigo (Wenzhou)", zh: "温州炒粉/面", info: "Carne, vegetais" },
-                { pt: "Massa com Frango Desfiado", zh: "鸡丝凉面", info: "Frango, massa" },
-                { pt: "Bolinhos (Carne/Três Sabores)", zh: "饺子(鲜肉/三鲜)", info: "Carne / Marisco e carne" }
-            ]
-        },
-        {
-            cat: "SOBREMESAS / 甜点",
-            items: [
-                { pt: "Bolinhos de Arroz Glutinoso", zh: "红糖糍粑", info: "Arroz glutinoso" },
-                { pt: "Sopa de Cogumelo de Neve", zh: "银耳羹", info: "Tremella" },
-                { pt: "Sopa de Feijão com Bolinhas", zh: "红豆/绿豆沙小汤圆", info: "Feijão, arroz glutinoso" }
-            ]
-        }
-    ];
-
-    // 自动渲染菜单
-    function initMenu() {
-        const display = document.getElementById('menu-display');
-        let fullHtml = '';
-
-        fullMenu.forEach(section => {
-            fullHtml += `<div class="category-title"><span>${section.cat}</span></div>`;
-            section.items.forEach(item => {
-                const spicyIcons = '🌶️'.repeat(item.spicy || 0);
-                fullHtml += `
-                    <label class="menu-item">
-                        <input type="checkbox" class="checkbox-custom" value="${item.zh} (${item.pt})">
-                        <div class="item-info">
-                            <span class="name-pt">${item.pt}<span class="tag-spicy">${spicyIcons}</span></span>
-                            <span class="name-zh">${item.zh}</span>
-                            <span class="ingredients">${item.info}</span>
-                        </div>
-                    </label>
-                `;
-            });
-        });
-        display.innerHTML = fullHtml;
-    }
-
-    function submitOrder() {
-        const selected = document.querySelectorAll('.checkbox-custom:checked');
-        if (selected.length === 0) {
-            alert("Por favor, selecione um prato! / 请选择菜品！");
-            return;
-        }
-
-        let orderList = [];
-        selected.forEach(item => orderList.push(item.value));
-
-        const orderText = "--- Novo Pedido / 新订单 ---\n" + orderList.join("\n");
-        
-        // 弹出预览
-        alert(orderText + "\n\n(A enviar para a cozinha... / 正在传达给厨房...)");
-        
-        // 如果你配置了 WxPusher，在此处调用之前的 fetch 代码
-    }
-
-    window.onload = initMenu;
-</script>
 
 </body>
 </html>
