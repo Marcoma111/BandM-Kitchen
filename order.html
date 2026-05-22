@@ -310,7 +310,8 @@
 <script>
     // ==================== [核心数据配置中心] ====================
     const SUPABASE_URL = "https://hxezvumbkwmavphcahcv.supabase.co"; 
-    const SUPABASE_ANON_KEY = "sb_publishable_JK6PQ1vOlP5NL9aQTUiS-Q_Ca6emzlX"; 
+    // ⚠️ 请在这里填入您在 Supabase API 页面中找到的、巨长的、以 eyJ 开头的 anon public 密钥
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh4ZXp2dW1ia3dtYXZwaGNhaGN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NDk4NDgsImV4cCI6MjA5NTAyNTg0OH0.TPEzo0Rf9cjj3muAO9tfx-W3jc54vHFbl20j6U4tbXs"; 
     const PUSHDEER_KEY = "PDU41530TPPT6IuAkywJ0iZXEzw64SI5jGxLjuPw4";
     // ==========================================================
 
@@ -324,13 +325,13 @@
             title: "BandM Kitchen 点单", subtitle: "探索极致风味 · 开启私享点单", lang: "Português",
             name: "您的姓名", contact: "联系方式", date: "就餐日期", menu: "尊享菜单", submit: "提交订单",
             alert_name: "请填写您的姓名！", alert_contact: "请填写您的联系方式！", alert_date: "请选择就餐日期！",
-            alert_dish: "请至少勾选一道美味菜品！", submitting: "正在打包提交...", success: "订单提交成功！我们已同步收到微信通知。"
+            alert_dish: "请至少勾选一道美味菜品！", submitting: "正在打包提交...", success: "订单提交成功！我们已通过 App 收到通知。"
         },
         pt: {
             title: "BandM Kitchen", subtitle: "Sabores exclusivos para o seu dia", lang: "中文",
             name: "Seu Nome", contact: "Contacto", date: "Data do Jantar", menu: "Menu Exclusivo", submit: "Enviar Pedido",
             alert_name: "Por favor, introduza o seu nome!", alert_contact: "Por favor, introduza o seu contacto!", alert_date: "Por favor, escolha a data!",
-            alert_dish: "Selecione pelo menos um prato do menu!", submitting: "A enviar...", success: "Pedido enviado com sucesso! Já fomos notificados."
+            alert_dish: "Selecione pelo menos um prato do menu!", submitting: "A enviar...", success: "Pedido enviado com sucesso! Já fomos notificados no App."
         }
     };
 
@@ -354,7 +355,7 @@
         renderMenu();
     }
 
-    // 页面加载自动获取全量菜品（不再有任何日期过滤）
+    // 页面加载自动获取全量菜品
     async function loadAllDishes() {
         try {
             let { data, error } = await db.from('dishes').select('*');
@@ -363,7 +364,7 @@
             renderMenu();
         } catch (err) {
             console.error(err);
-            document.getElementById('menu-box').innerHTML = `<div class="status-msg" style="color:red;">加载失败: ${err.message}</div>`;
+            document.getElementById('menu-box').innerHTML = `<div class="status-msg" style="color:red;">Error: ${err.message}</div>`;
         }
     }
 
@@ -395,7 +396,7 @@
         });
     }
 
-    // 点击整块卡片勾选/反选的高级交互逻辑
+    // 点击整块卡片勾选/反选交互
     function selectDishCard(cardElement) {
         const checkbox = cardElement.querySelector('input[type="checkbox"]');
         checkbox.checked = !checkbox.checked;
@@ -442,14 +443,16 @@
             ]);
             if (error) throw error;
 
-            // 2. 毫秒级异步发送微信通知 (PushDeer)
+            // 2. 发送 PushDeer App 通知（加入 no-cors 模式，完美防止因跨域政策导致的假报错拦截）
             const msgContent = `🚨 BandM Kitchen 新订单提醒 🚨\n\n` +
                                `👤 顾客姓名: ${name}\n` +
                                `📞 联系方式: ${contact}\n` +
                                `📅 就餐日期: ${date}\n` +
                                `🍳 预订菜品:\n${wxNotifyText}`;
 
-            await fetch(`https://api2.pushdeer.com/message/push?pushkey=${PUSHDEER_KEY}&text=${encodeURIComponent(msgContent)}`);
+            await fetch(`https://api2.pushdeer.com/message/push?pushkey=${PUSHDEER_KEY}&text=${encodeURIComponent(msgContent)}`, {
+                mode: 'no-cors'
+            });
 
             alert(i18n[currentLang].success);
             
